@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ── Color Palette: Wellness & Lifestyle (Real Estate) ── */
+  --color-forest: #408175;
+  --color-forest-dark: #2d5b53;
+  --color-forest-light: #5a9e90;
+  --color-cream: #FDF6EF;
+  --color-cream-dark: #F5EBE0;
+  --color-saffron: #E8913A;
+  --color-saffron-dark: #C67A2E;
+  --color-terracotta: #C2703E;
+  --color-terracotta-dark: #A35D33;
+
+  /* ── Semantic Tokens ── */
+  --color-primary: #408175;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #FDF6EF;
+  --color-secondary-foreground: #2d3b36;
+  --color-accent: #E8913A;
+  --color-accent-foreground: #FFFFFF;
+  --color-background: #FEFCF9;
+  --color-foreground: #1a2e28;
+  --color-muted: #F0EDE8;
+  --color-muted-foreground: #6B7B75;
+  --color-border: #D4CFC7;
+  --color-ring: #408175;
+  --color-destructive: #DC2626;
+
+  /* ── Card ── */
+  --color-card: #FFFFFF;
+  --color-card-foreground: #1a2e28;
+
+  /* ── Typography ── */
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Josefin Sans', sans-serif;
+
+  /* ── Border Radius ── */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+/* ── Base Styles ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+/* ── Focus Styles ── */
+*:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Selection ── */
+::selection {
+  background-color: var(--color-forest);
+  color: white;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-muted);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-forest-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-forest);
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
