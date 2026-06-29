@@ -33,15 +33,15 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Legal */}
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-saffron">
-              Resources
+              Legal
             </h3>
             <ul className="space-y-2 text-sm text-cream-dark/70">
-              <li><span className="cursor-default">API Documentation</span></li>
-              <li><span className="cursor-default">Investment Guide</span></li>
-              <li><span className="cursor-default">Market Reports</span></li>
+              <li><a href="/privacy" className="transition-colors hover:text-cream cursor-pointer">Privacy Policy</a></li>
+              <li><a href="/terms" className="transition-colors hover:text-cream cursor-pointer">Terms &amp; Conditions</a></li>
+              <li><a href="#analyzer" className="transition-colors hover:text-cream cursor-pointer">Investment Disclaimer</a></li>
             </ul>
           </div>
 
@@ -63,11 +63,5 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-center text-xs text-cream-dark/50">
-          &copy; {new Date().getFullYear()} REIPro. All rights reserved. Built
-          with precision for real estate investors.
-        </div>
-      </div>
-    </footer>
-  );
-}
+        <div className="mt-10 border-t border-white/10 pt-6 text-xs text-cream-dark/50">
+          <div className="flex flex-col items-center gap
