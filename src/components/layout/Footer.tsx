@@ -64,4 +64,21 @@ export function Footer() {
         </div>
 
         <div className="mt-10 border-t border-white/10 pt-6 text-xs text-cream-dark/50">
-          <div className="flex flex-col items-center gap
+          <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+            <span>
+              &copy; {new Date().getFullYear()} REIPro. All rights reserved.
+            </span>
+            <div className="flex gap-4">
+              <a href="/privacy" className="transition-colors hover:text-cream">Privacy</a>
+              <a href="/terms" className="transition-colors hover:text-cream">Terms</a>
+            </div>
+          </div>
+          <p className="mt-3 text-center text-cream-dark/40 leading-relaxed">
+            REIPro is an analytical tool for informational purposes only. It does not constitute financial, investment, or legal advice.
+            Always consult qualified professionals before making investment decisions.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
