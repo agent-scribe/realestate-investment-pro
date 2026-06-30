@@ -1,14 +1,5 @@
 "use client";
 
-/**
- * AI Image-Based Property Valuation — upload section.
- *
- * Lets a user drop or pick a property photo, validates it client-side, posts it
- * to /api/valuation/analyze, shows staged progress while the pipeline runs, and
- * renders the result (or a friendly error). Mirrors the look & interaction
- * patterns of the existing PropertyAnalyzer section.
- */
-
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Camera,
@@ -26,10 +17,9 @@ import {
 import { ValuationResults } from "./ValuationResults";
 import type { ValuationResult } from "@/lib/valuation/types";
 
-const MAX_BYTES = 10 * 1024 * 1024; // keep in sync with server
+const MAX_BYTES = 10 * 1024 * 1024;
 const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 
-/** Progress stages shown while the (single) request is in flight. */
 const STAGES = [
   { icon: UploadCloud, label: "Uploading & securing image" },
   { icon: ScanSearch, label: "Analyzing image with AI vision" },
@@ -49,16 +39,12 @@ export function ImageValuation() {
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Revoke object URLs to avoid memory leaks.
   useEffect(() => {
     return () => {
       if (previewUrl) URL.revokeObjectURL(previewUrl);
     };
   }, [previewUrl]);
 
-  // Advance the progress stepper while loading (visual only). Stage is reset to
-  // 0 by handleAnalyze before loading flips on, so the effect only schedules the
-  // interval — no synchronous setState in the effect body.
   useEffect(() => {
     if (!loading) return;
     const timer = setInterval(() => {
@@ -136,14 +122,13 @@ export function ImageValuation() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-12 max-w-2xl text-center">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-saffron/20 bg-saffron/5 px-3 py-1 text-xs font-medium text-saffron-dark">
-            <Camera className="h-3 w-3" />
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-700">
             Image Valuation
-          </span>
-          <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Value a Property from a <span className="text-primary">Photo</span>
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-brand-900 sm:text-4xl">
+            Value a property from a photo
           </h2>
-          <p className="mt-4 text-base text-muted-foreground">
+          <p className="mt-4 text-base text-brand-400">
             Upload an image of any house, building, or lot. Our AI identifies the
             property, locates it on the map, pulls comparable listings, and
             estimates its current market value — with a confidence score and full
@@ -152,7 +137,7 @@ export function ImageValuation() {
         </div>
 
         <div className="mx-auto max-w-4xl">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-lg shadow-forest/5 sm:p-8">
+          <div className="rounded-xl border border-border bg-white p-6 shadow-sm sm:p-8">
             {/* Dropzone / preview */}
             {!previewUrl ? (
               <div
@@ -169,35 +154,35 @@ export function ImageValuation() {
                   if (e.key === "Enter" || e.key === " ") inputRef.current?.click();
                 }}
                 aria-label="Upload a property image"
-                className={`flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed px-6 py-14 text-center transition-colors ${
+                className={`flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed px-6 py-14 text-center transition-colors ${
                   dragOver
-                    ? "border-primary bg-forest/5"
-                    : "border-border hover:border-forest/40 hover:bg-muted/40"
+                    ? "border-brand-700 bg-brand-50"
+                    : "border-border hover:border-brand-300 hover:bg-brand-50/50"
                 }`}
               >
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-forest/10">
-                  <ImageIcon className="h-7 w-7 text-primary" />
+                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-brand-50">
+                  <ImageIcon className="h-7 w-7 text-brand-700" />
                 </div>
-                <p className="text-sm font-semibold text-foreground">
+                <p className="text-sm font-semibold text-brand-900">
                   Drop a property photo here, or click to browse
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">
+                <p className="mt-1 text-xs text-brand-400">
                   JPEG, PNG, or WebP · up to 10MB
                 </p>
               </div>
             ) : (
-              <div className="relative overflow-hidden rounded-xl border border-border">
+              <div className="relative overflow-hidden rounded-lg border border-border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={previewUrl}
                   alt="Property preview"
-                  className="max-h-96 w-full object-contain bg-muted/30"
+                  className="max-h-96 w-full object-contain bg-warm-100"
                 />
                 {!loading && (
                   <button
                     onClick={reset}
                     aria-label="Remove image"
-                    className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-foreground/70 text-white transition-colors hover:bg-foreground"
+                    className="absolute right-3 top-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-950/70 text-white transition-colors hover:bg-brand-950"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -213,7 +198,7 @@ export function ImageValuation() {
               onChange={(e) => {
                 const f = e.target.files?.[0];
                 if (f) selectFile(f);
-                e.target.value = ""; // allow re-selecting the same file
+                e.target.value = "";
               }}
             />
 
@@ -237,17 +222,17 @@ export function ImageValuation() {
                       key={s.label}
                       className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                         active
-                          ? "bg-forest/5 text-foreground"
+                          ? "bg-brand-50 text-brand-900"
                           : done
-                          ? "text-muted-foreground"
-                          : "text-muted-foreground/50"
+                          ? "text-brand-400"
+                          : "text-brand-200"
                       }`}
                     >
                       {active ? (
-                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                        <Loader2 className="h-4 w-4 animate-spin text-brand-700" />
                       ) : (
                         <StageIcon
-                          className={`h-4 w-4 ${done ? "text-forest" : ""}`}
+                          className={`h-4 w-4 ${done ? "text-brand-700" : ""}`}
                         />
                       )}
                       <span className={active ? "font-medium" : ""}>{s.label}</span>
@@ -261,14 +246,14 @@ export function ImageValuation() {
             {previewUrl && !loading && (
               <button
                 onClick={handleAnalyze}
-                className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-forest/20 transition-all duration-200 hover:bg-forest-dark hover:shadow-xl"
+                className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-brand-700 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-800"
               >
                 <ScanSearch className="h-4 w-4" />
                 {result ? "Re-analyze Image" : "Estimate Value from Image"}
               </button>
             )}
 
-            <p className="mt-4 text-center text-xs text-muted-foreground">
+            <p className="mt-4 text-center text-xs text-brand-400">
               Automated estimate for informational purposes only — not a formal
               appraisal.
             </p>

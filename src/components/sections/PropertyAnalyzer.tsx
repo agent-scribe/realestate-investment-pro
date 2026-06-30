@@ -141,8 +141,8 @@ export function PropertyAnalyzer() {
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 7) return "text-forest";
-    if (score >= 5) return "text-saffron";
+    if (score >= 7) return "text-brand-700";
+    if (score >= 5) return "text-brand-500";
     return "text-destructive";
   };
 
@@ -161,18 +161,17 @@ export function PropertyAnalyzer() {
   };
 
   return (
-    <section id="analyzer" className="py-20 sm:py-28 bg-cream/50">
+    <section id="analyzer" className="py-20 sm:py-28 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="mx-auto max-w-2xl text-center mb-12">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-saffron/20 bg-saffron/5 px-3 py-1 text-xs font-medium text-saffron-dark">
-            <Calculator className="h-3 w-3" />
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-700">
             Property Analyzer
-          </span>
-          <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            Analyze Your <span className="text-primary">Investment</span>
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-brand-900 sm:text-4xl">
+            Analyze your investment
           </h2>
-          <p className="mt-4 text-base text-muted-foreground">
+          <p className="mt-4 text-base text-brand-400">
             Enter property details to get a comprehensive analysis with cash flow
             projections, risk assessment, and AI-powered insights.
           </p>
@@ -180,7 +179,7 @@ export function PropertyAnalyzer() {
 
         {/* Form */}
         <div className="mx-auto max-w-4xl">
-          <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-lg shadow-forest/5">
+          <div className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
             {/* Property Location */}
             <div className="mb-8">
               <h3 className="flex items-center gap-2 text-base font-semibold text-foreground mb-4">
@@ -347,7 +346,7 @@ export function PropertyAnalyzer() {
             <div className="mb-8">
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center gap-2 text-sm font-medium text-primary hover:text-forest-dark transition-colors cursor-pointer"
+                className="flex items-center gap-2 text-sm font-medium text-primary hover:text-brand-700-dark transition-colors cursor-pointer"
               >
                 <Percent className="h-4 w-4" />
                 Advanced Projections
@@ -384,7 +383,7 @@ export function PropertyAnalyzer() {
             <button
               onClick={handleAnalyze}
               disabled={loading}
-              className="w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-forest/20 transition-all duration-200 hover:bg-forest-dark hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
+              className="w-full rounded-xl bg-primary py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-brand-700/20 transition-all duration-200 hover:bg-brand-700-dark hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
@@ -404,10 +403,10 @@ export function PropertyAnalyzer() {
           {result && (
             <div className="mt-8 space-y-6">
               {/* Investment Score Card */}
-              <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-lg shadow-forest/5">
+              <div className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
                   <div>
-                    <h3 className="font-heading text-xl font-bold text-foreground">
+                    <h3 className="text-xl font-bold text-foreground">
                       Investment Score
                     </h3>
                     <p className="text-sm text-muted-foreground">
@@ -425,7 +424,7 @@ export function PropertyAnalyzer() {
                     })()}
                     <div className="text-right">
                       <div
-                        className={`text-4xl font-bold font-heading ${getScoreColor(result.investmentScore)}`}
+                        className={`text-4xl font-bold ${getScoreColor(result.investmentScore)}`}
                       >
                         {result.investmentScore}
                         <span className="text-lg text-muted-foreground">/10</span>
@@ -455,9 +454,9 @@ export function PropertyAnalyzer() {
                       <div
                         className={`text-xl font-bold ${
                           item.value >= 7
-                            ? "text-forest"
+                            ? "text-brand-700"
                             : item.value >= 5
-                            ? "text-saffron"
+                            ? "text-brand-500"
                             : "text-destructive"
                         }`}
                       >
@@ -468,9 +467,9 @@ export function PropertyAnalyzer() {
                         <div
                           className={`h-1.5 rounded-full transition-all duration-500 ${
                             item.value >= 7
-                              ? "bg-forest"
+                              ? "bg-brand-700"
                               : item.value >= 5
-                              ? "bg-saffron"
+                              ? "bg-brand-500"
                               : "bg-destructive"
                           }`}
                           style={{ width: `${item.value * 10}%` }}
@@ -517,8 +516,8 @@ export function PropertyAnalyzer() {
                       {metric.label}
                     </div>
                     <div
-                      className={`text-2xl font-bold font-heading ${
-                        metric.positive ? "text-forest" : "text-destructive"
+                      className={`text-2xl font-bold ${
+                        metric.positive ? "text-brand-700" : "text-destructive"
                       }`}
                     >
                       {metric.value}
@@ -531,13 +530,13 @@ export function PropertyAnalyzer() {
               </div>
 
               {/* Monthly Breakdown */}
-              <div className="rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm">
-                <h3 className="font-heading text-lg font-bold text-foreground mb-4">
+              <div className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
+                <h3 className="text-lg font-bold text-foreground mb-4">
                   Monthly Breakdown
                 </h3>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
-                    <h4 className="text-sm font-semibold text-forest mb-3">Income</h4>
+                    <h4 className="text-sm font-semibold text-brand-700 mb-3">Income</h4>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">Gross Rent</span>
@@ -551,7 +550,7 @@ export function PropertyAnalyzer() {
                       </div>
                       <div className="flex justify-between text-sm border-t border-border pt-2 font-semibold">
                         <span>Effective Income</span>
-                        <span className="text-forest">${result.effectiveMonthlyIncome.toFixed(0)}</span>
+                        <span className="text-brand-700">${result.effectiveMonthlyIncome.toFixed(0)}</span>
                       </div>
                     </div>
                   </div>
@@ -590,8 +589,8 @@ export function PropertyAnalyzer() {
                 <div className="mt-6 rounded-lg bg-muted/50 p-4 flex justify-between items-center">
                   <span className="font-semibold text-foreground">Net Monthly Cash Flow</span>
                   <span
-                    className={`text-2xl font-bold font-heading ${
-                      result.monthlyNetCashFlow >= 0 ? "text-forest" : "text-destructive"
+                    className={`text-2xl font-bold ${
+                      result.monthlyNetCashFlow >= 0 ? "text-brand-700" : "text-destructive"
                     }`}
                   >
                     ${result.monthlyNetCashFlow.toFixed(0)}/mo
@@ -603,10 +602,10 @@ export function PropertyAnalyzer() {
               <ResultsDashboard result={result} />
 
               {/* AI Insight */}
-              <div className="rounded-2xl border border-forest/20 bg-forest/5 p-6 sm:p-8">
+              <div className="rounded-xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
                 <div className="flex items-center gap-2 mb-4">
-                  <Brain className="h-5 w-5 text-forest" />
-                  <h3 className="font-heading text-lg font-bold text-foreground">
+                  <Brain className="h-5 w-5 text-brand-700" />
+                  <h3 className="text-lg font-bold text-foreground">
                     AI Investment Insight
                   </h3>
                 </div>

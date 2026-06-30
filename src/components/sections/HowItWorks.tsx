@@ -33,17 +33,16 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-20 sm:py-28 bg-foreground text-cream">
+    <section id="how-it-works" className="py-20 sm:py-28 bg-brand-900 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center mb-16">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-saffron/30 bg-saffron/10 px-3 py-1 text-xs font-medium text-saffron">
-            <BarChart3 className="h-3 w-3" />
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-400">
             Simple Process
-          </span>
-          <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
-            How It <span className="text-saffron">Works</span>
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            How it works
           </h2>
-          <p className="mt-4 text-base text-cream-dark/60 leading-relaxed">
+          <p className="mt-4 text-base text-brand-300 leading-relaxed">
             From property address to professional investment analysis in under
             two minutes.
           </p>
@@ -52,24 +51,23 @@ export function HowItWorks() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((item, idx) => (
             <div key={item.step} className="relative group">
-              {/* Connector line */}
               {idx < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-saffron/30 to-transparent -translate-x-4" />
+                <div className="hidden lg:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-brand-700/40 to-transparent -translate-x-4" />
               )}
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 transition-all duration-200 group-hover:border-saffron/20 group-hover:bg-white/[0.08]">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-6 transition-all duration-200 group-hover:border-brand-400/20 group-hover:bg-white/[0.08]">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="text-3xl font-bold font-heading text-saffron/30">
+                  <span className="text-3xl font-bold text-brand-700/40">
                     {item.step}
                   </span>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-saffron/10 text-saffron">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-700/20 text-brand-400">
                     <item.icon className="h-5 w-5" />
                   </div>
                 </div>
-                <h3 className="font-heading text-lg font-semibold text-cream mb-2">
+                <h3 className="text-lg font-semibold text-white mb-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-cream-dark/60 leading-relaxed">
+                <p className="text-sm text-brand-300 leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -81,7 +79,7 @@ export function HowItWorks() {
         <div className="mt-16 text-center">
           <a
             href="#analyzer"
-            className="inline-flex items-center gap-2 rounded-xl bg-saffron px-8 py-3.5 text-sm font-semibold text-white shadow-lg shadow-saffron/20 transition-all duration-200 hover:bg-saffron-dark hover:shadow-xl cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-8 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-600 cursor-pointer"
           >
             <Calculator className="h-4 w-4" />
             Try It Now — Free

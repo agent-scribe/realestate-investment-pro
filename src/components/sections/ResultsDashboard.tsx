@@ -60,42 +60,42 @@ export function ResultsDashboard({ result }: Props) {
       {/* Charts Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Property Value & Equity */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <h4 className="font-heading text-base font-semibold text-foreground mb-4">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <h4 className="text-base font-semibold text-foreground mb-4">
             Property Value & Equity Growth
           </h4>
           <ResponsiveContainer width="100%" height={280}>
             <AreaChart data={fullData}>
               <defs>
                 <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#408175" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#408175" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#1A5F4A" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#1A5F4A" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorEquity" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#E8913A" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#E8913A" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#2D8B6A" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#2D8B6A" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#D4CFC7" opacity={0.5} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E0E8E4" opacity={0.5} />
               <XAxis
                 dataKey="year"
-                tick={{ fill: "#6B7B75", fontSize: 12 }}
+                tick={{ fill: "#5B7A6E", fontSize: 12 }}
                 tickLine={false}
-                axisLine={{ stroke: "#D4CFC7" }}
-                label={{ value: "Year", position: "bottom", fill: "#6B7B75", fontSize: 12, dy: 10 }}
+                axisLine={{ stroke: "#E0E8E4" }}
+                label={{ value: "Year", position: "bottom", fill: "#5B7A6E", fontSize: 12, dy: 10 }}
               />
               <YAxis
                 tickFormatter={formatCurrency}
-                tick={{ fill: "#6B7B75", fontSize: 12 }}
+                tick={{ fill: "#5B7A6E", fontSize: 12 }}
                 tickLine={false}
-                axisLine={{ stroke: "#D4CFC7" }}
+                axisLine={{ stroke: "#E0E8E4" }}
               />
               <Tooltip
                 formatter={(value: number) => formatFullCurrency(value)}
                 contentStyle={{
                   borderRadius: "8px",
-                  border: "1px solid #D4CFC7",
-                  backgroundColor: "#FEFCF9",
+                  border: "1px solid #E0E8E4",
+                  backgroundColor: "#FAF8F4",
                   fontSize: "13px",
                 }}
               />
@@ -105,7 +105,7 @@ export function ResultsDashboard({ result }: Props) {
               <Area
                 type="monotone"
                 dataKey="propertyValue"
-                stroke="#408175"
+                stroke="#1A5F4A"
                 strokeWidth={2}
                 fill="url(#colorValue)"
                 name="Property Value"
@@ -113,7 +113,7 @@ export function ResultsDashboard({ result }: Props) {
               <Area
                 type="monotone"
                 dataKey="equity"
-                stroke="#E8913A"
+                stroke="#2D8B6A"
                 strokeWidth={2}
                 fill="url(#colorEquity)"
                 name="Equity"
@@ -123,37 +123,37 @@ export function ResultsDashboard({ result }: Props) {
         </div>
 
         {/* Cash Flow Over Time */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <h4 className="font-heading text-base font-semibold text-foreground mb-4">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <h4 className="text-base font-semibold text-foreground mb-4">
             Annual Cash Flow
           </h4>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#D4CFC7" opacity={0.5} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E0E8E4" opacity={0.5} />
               <XAxis
                 dataKey="year"
-                tick={{ fill: "#6B7B75", fontSize: 12 }}
+                tick={{ fill: "#5B7A6E", fontSize: 12 }}
                 tickLine={false}
-                axisLine={{ stroke: "#D4CFC7" }}
+                axisLine={{ stroke: "#E0E8E4" }}
               />
               <YAxis
                 tickFormatter={formatCurrency}
-                tick={{ fill: "#6B7B75", fontSize: 12 }}
+                tick={{ fill: "#5B7A6E", fontSize: 12 }}
                 tickLine={false}
-                axisLine={{ stroke: "#D4CFC7" }}
+                axisLine={{ stroke: "#E0E8E4" }}
               />
               <Tooltip
                 formatter={(value: number) => formatFullCurrency(value)}
                 contentStyle={{
                   borderRadius: "8px",
-                  border: "1px solid #D4CFC7",
-                  backgroundColor: "#FEFCF9",
+                  border: "1px solid #E0E8E4",
+                  backgroundColor: "#FAF8F4",
                   fontSize: "13px",
                 }}
               />
               <Bar
                 dataKey="cashFlow"
-                fill="#408175"
+                fill="#1A5F4A"
                 radius={[4, 4, 0, 0]}
                 name="Annual Cash Flow"
               />
@@ -162,32 +162,32 @@ export function ResultsDashboard({ result }: Props) {
         </div>
 
         {/* Total Return */}
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm lg:col-span-2">
-          <h4 className="font-heading text-base font-semibold text-foreground mb-4">
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm lg:col-span-2">
+          <h4 className="text-base font-semibold text-foreground mb-4">
             Total Return (Equity + Cumulative Cash Flow - Initial Investment)
           </h4>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={fullData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#D4CFC7" opacity={0.5} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E0E8E4" opacity={0.5} />
               <XAxis
                 dataKey="year"
-                tick={{ fill: "#6B7B75", fontSize: 12 }}
+                tick={{ fill: "#5B7A6E", fontSize: 12 }}
                 tickLine={false}
-                axisLine={{ stroke: "#D4CFC7" }}
-                label={{ value: "Year", position: "bottom", fill: "#6B7B75", fontSize: 12, dy: 10 }}
+                axisLine={{ stroke: "#E0E8E4" }}
+                label={{ value: "Year", position: "bottom", fill: "#5B7A6E", fontSize: 12, dy: 10 }}
               />
               <YAxis
                 tickFormatter={formatCurrency}
-                tick={{ fill: "#6B7B75", fontSize: 12 }}
+                tick={{ fill: "#5B7A6E", fontSize: 12 }}
                 tickLine={false}
-                axisLine={{ stroke: "#D4CFC7" }}
+                axisLine={{ stroke: "#E0E8E4" }}
               />
               <Tooltip
                 formatter={(value: number) => formatFullCurrency(value)}
                 contentStyle={{
                   borderRadius: "8px",
-                  border: "1px solid #D4CFC7",
-                  backgroundColor: "#FEFCF9",
+                  border: "1px solid #E0E8E4",
+                  backgroundColor: "#FAF8F4",
                   fontSize: "13px",
                 }}
               />
@@ -195,7 +195,7 @@ export function ResultsDashboard({ result }: Props) {
               <Line
                 type="monotone"
                 dataKey="totalReturn"
-                stroke="#408175"
+                stroke="#1A5F4A"
                 strokeWidth={2.5}
                 dot={false}
                 name="Total Return"
@@ -203,7 +203,7 @@ export function ResultsDashboard({ result }: Props) {
               <Line
                 type="monotone"
                 dataKey="cumulativeCashFlow"
-                stroke="#C2703E"
+                stroke="#4DAA86"
                 strokeWidth={2}
                 strokeDasharray="5 5"
                 dot={false}
@@ -215,8 +215,8 @@ export function ResultsDashboard({ result }: Props) {
       </div>
 
       {/* Projection Table */}
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm overflow-x-auto">
-        <h4 className="font-heading text-base font-semibold text-foreground mb-4">
+      <div className="rounded-xl border border-border bg-card p-5 shadow-sm overflow-x-auto">
+        <h4 className="text-base font-semibold text-foreground mb-4">
           Projection Summary
         </h4>
         <table className="w-full text-sm" role="table">
@@ -239,7 +239,7 @@ export function ResultsDashboard({ result }: Props) {
                 </td>
                 <td
                   className={`py-2.5 px-4 text-right tabular-nums font-medium ${
-                    row.annualCashFlow >= 0 ? "text-forest" : "text-destructive"
+                    row.annualCashFlow >= 0 ? "text-brand-700" : "text-destructive"
                   }`}
                 >
                   ${row.annualCashFlow.toLocaleString()}
@@ -247,10 +247,10 @@ export function ResultsDashboard({ result }: Props) {
                 <td className="py-2.5 px-4 text-right tabular-nums">
                   ${row.cumulativeCashFlow.toLocaleString()}
                 </td>
-                <td className="py-2.5 px-4 text-right tabular-nums text-forest font-medium">
+                <td className="py-2.5 px-4 text-right tabular-nums text-brand-700 font-medium">
                   ${row.equity.toLocaleString()}
                 </td>
-                <td className="py-2.5 pl-4 text-right tabular-nums font-bold text-forest">
+                <td className="py-2.5 pl-4 text-right tabular-nums font-bold text-brand-700">
                   ${row.totalReturn.toLocaleString()}
                 </td>
               </tr>

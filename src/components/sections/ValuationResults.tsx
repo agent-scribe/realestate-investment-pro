@@ -37,13 +37,13 @@ const usd = (n: number | null | undefined) =>
 
 /** Pick gauge/label color from a 0–100 confidence score. */
 function confidenceColor(score: number): string {
-  if (score >= 70) return "text-forest";
-  if (score >= 45) return "text-saffron";
+  if (score >= 70) return "text-brand-700";
+  if (score >= 45) return "text-brand-500";
   return "text-destructive";
 }
 function confidenceStroke(score: number): string {
-  if (score >= 70) return "#408175";
-  if (score >= 45) return "#E8913A";
+  if (score >= 70) return "oklch(0.37 0.12 160)";
+  if (score >= 45) return "oklch(0.55 0.14 160)";
   return "#DC2626";
 }
 function confidenceLabel(score: number): string {
@@ -57,9 +57,9 @@ function confidenceLabel(score: number): string {
 /** Small badge showing where a value came from. */
 function SourceBadge({ source }: { source: DataSource }) {
   const map: Record<DataSource, { label: string; cls: string }> = {
-    google: { label: "Google", cls: "bg-forest/10 text-forest" },
-    marketplace: { label: "Live data", cls: "bg-forest/10 text-forest" },
-    ai: { label: "AI vision", cls: "bg-saffron/10 text-saffron-dark" },
+    google: { label: "Google", cls: "bg-brand-50 text-brand-700" },
+    marketplace: { label: "Live data", cls: "bg-brand-50 text-brand-700" },
+    ai: { label: "AI vision", cls: "bg-brand-100 text-brand-600-dark" },
     estimated: { label: "Estimated", cls: "bg-muted text-muted-foreground" },
   };
   const { label, cls } = map[source];
@@ -100,7 +100,7 @@ function ConfidenceGauge({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className={`text-3xl font-bold font-heading ${confidenceColor(score)}`}>
+        <span className={`text-3xl font-bold ${confidenceColor(score)}`}>
           {score}
         </span>
         <span className="text-[10px] uppercase tracking-wide text-muted-foreground">
@@ -185,7 +185,7 @@ function ReportMarkdown({ markdown }: { markdown: string }) {
         out.push(
           <h4
             key={`h-${idx}`}
-            className="mt-5 mb-2 font-heading text-base font-bold text-foreground first:mt-0"
+            className="mt-5 mb-2 text-base font-bold text-foreground first:mt-0"
           >
             {line.slice(3)}
           </h4>
@@ -193,7 +193,7 @@ function ReportMarkdown({ markdown }: { markdown: string }) {
       } else if (line.startsWith("# ")) {
         flushList(`l-${idx}`);
         out.push(
-          <h3 key={`h-${idx}`} className="mt-5 mb-2 font-heading text-lg font-bold text-foreground">
+          <h3 key={`h-${idx}`} className="mt-5 mb-2 text-lg font-bold text-foreground">
             {line.slice(2)}
           </h3>
         );
@@ -235,7 +235,7 @@ function ComparableCard({ comp }: { comp: Comparable }) {
         </span>
         <SourceBadge source={comp.source} />
       </div>
-      <div className="text-xl font-bold font-heading text-primary">
+      <div className="text-xl font-bold text-primary">
         {usd(comp.price)}
       </div>
       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
@@ -276,8 +276,8 @@ export function ValuationResults({ result }: Props) {
     <div className="mt-8 space-y-6">
       {/* Demo mode banner */}
       {warnings.some((w) => w.code === "DEMO_MODE") && (
-        <div className="rounded-xl border border-forest/30 bg-forest/5 p-4">
-          <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-forest">
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4">
+          <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-brand-700">
             <FlaskConical className="h-4 w-4" />
             Demo Mode — Sample Data
           </div>
@@ -291,8 +291,8 @@ export function ValuationResults({ result }: Props) {
 
       {/* Non-demo warnings */}
       {warnings.filter((w) => w.code !== "DEMO_MODE").length > 0 && (
-        <div className="rounded-xl border border-saffron/30 bg-saffron/5 p-4">
-          <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-saffron-dark">
+        <div className="rounded-xl border border-brand-300 bg-brand-50 p-4">
+          <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-brand-500-dark">
             <AlertTriangle className="h-4 w-4" />
             Notes on this estimate
           </div>
@@ -308,16 +308,16 @@ export function ValuationResults({ result }: Props) {
 
       {/* Headline: value + confidence */}
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-lg shadow-forest/5">
+        <div className="lg:col-span-2 rounded-xl border border-border bg-card p-6 sm:p-8 shadow-sm">
           <div className="grid gap-6 sm:grid-cols-[1fr_auto] sm:items-center">
             <div>
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/20 bg-forest/5 px-3 py-1 text-xs font-medium text-forest">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-medium text-brand-700">
                 <Sparkles className="h-3 w-3" />
                 Estimated Market Value
               </span>
               {estimate ? (
                 <>
-                  <div className="mt-3 text-4xl font-bold font-heading text-primary sm:text-5xl">
+                  <div className="mt-3 text-4xl font-bold text-primary sm:text-5xl">
                     {usd(estimate.estimatedValue)}
                   </div>
                   <div className="mt-1 text-sm text-muted-foreground">
@@ -326,7 +326,7 @@ export function ValuationResults({ result }: Props) {
                   </div>
                 </>
               ) : (
-                <div className="mt-3 text-2xl font-bold font-heading text-muted-foreground">
+                <div className="mt-3 text-2xl font-bold text-muted-foreground">
                   Value unavailable
                 </div>
               )}
@@ -364,7 +364,7 @@ export function ValuationResults({ result }: Props) {
         </div>
 
         {/* Detected property profile */}
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -373,7 +373,7 @@ export function ValuationResults({ result }: Props) {
               className="h-14 w-14 rounded-lg border border-border object-cover"
             />
             <div>
-              <h3 className="font-heading text-sm font-bold text-foreground">
+              <h3 className="text-sm font-bold text-foreground">
                 Detected Property
               </h3>
               <SourceBadge source={imageAnalysis.source} />
@@ -432,9 +432,9 @@ export function ValuationResults({ result }: Props) {
 
       {/* Location */}
       {location && (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-            <h3 className="flex items-center gap-2 font-heading text-lg font-bold text-foreground">
+            <h3 className="flex items-center gap-2 text-lg font-bold text-foreground">
               <MapPin className="h-4 w-4 text-primary" />
               Location
             </h3>
@@ -483,7 +483,7 @@ export function ValuationResults({ result }: Props) {
           ].map((m) => (
             <div key={m.label} className="rounded-xl border border-border bg-card p-5 shadow-sm">
               <div className="mb-1 text-xs font-medium text-muted-foreground">{m.label}</div>
-              <div className="text-2xl font-bold font-heading text-foreground">{m.value}</div>
+              <div className="text-2xl font-bold text-foreground">{m.value}</div>
             </div>
           ))}
         </div>
@@ -491,8 +491,8 @@ export function ValuationResults({ result }: Props) {
 
       {/* Comparables */}
       {comparables.length > 0 && (
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
-          <h3 className="mb-4 flex items-center gap-2 font-heading text-lg font-bold text-foreground">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <h3 className="mb-4 flex items-center gap-2 text-lg font-bold text-foreground">
             <Building2 className="h-4 w-4 text-primary" />
             Comparable Properties
             <span className="text-sm font-normal text-muted-foreground">
@@ -508,10 +508,10 @@ export function ValuationResults({ result }: Props) {
       )}
 
       {/* AI Report */}
-      <div className="rounded-2xl border border-forest/20 bg-forest/5 p-6 sm:p-8">
+      <div className="rounded-xl border border-brand-200 bg-brand-50 p-6 sm:p-8">
         <div className="mb-4 flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-forest" />
-          <h3 className="font-heading text-lg font-bold text-foreground">
+          <Sparkles className="h-5 w-5 text-brand-700" />
+          <h3 className="text-lg font-bold text-foreground">
             AI Valuation Report
           </h3>
         </div>

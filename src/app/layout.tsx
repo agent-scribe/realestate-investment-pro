@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Cinzel, Josefin_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const cinzel = Cinzel({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const josefinSans = Josefin_Sans({
-  variable: "--font-body",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
@@ -38,11 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${cinzel.variable} ${josefinSans.variable} h-full`}
-    >
-      <body className="min-h-full flex flex-col">
+    <html lang="en" className={`${inter.variable} h-full`}>
+      <body className="min-h-full flex flex-col antialiased">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
