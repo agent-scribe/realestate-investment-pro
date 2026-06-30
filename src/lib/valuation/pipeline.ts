@@ -3,6 +3,11 @@
  * final ValuationResult. Each stage degrades gracefully; non-fatal issues are
  * collected as warnings rather than thrown, so the user always gets the most
  * complete result the available data allows.
+ *
+ * When DEMO_MODE=true (set in .env.local), every stage uses pre-built fixture
+ * data from demo.ts instead of calling external providers. This makes the full
+ * UI functional without any API keys — ideal for demoing or selling the project.
+ * Buyers remove DEMO_MODE and add their own keys to switch to live data.
  */
 
 import { analyzeImage } from "./vision";
@@ -12,6 +17,16 @@ import { estimateValue } from "./valuation";
 import { generateReport } from "./report";
 import { toDataUrl, type StoredImage } from "./imageStorage";
 import type { ValuationResult, ValuationWarning } from "./types";
+import {
+  DEMO_IMAGE_ANALYSIS,
+  DEMO_LOCATION,
+  DEMO_COMPARABLES,
+  DEMO_MARKET,
+  DEMO_ESTIMATE,
+  DEMO_REPORT,
+} from "./demo";
+
+const IS_DEMO = process.env.DEMO_MODE === "true";
 
 /**
  * Run the valuation pipeline for an already-stored image.
@@ -27,6 +42,29 @@ export async function runValuation(
 
   const imageUrl = `/api/valuation/image/${stored.id}`;
 
+  // ── Demo mode: return fixture data, skip all external calls ──
+  if (IS_DEMO) {
+    warnings.push({
+      code: "DEMO_MODE",
+      message:
+        "Running in demo mode — results use representative sample data. Add your API keys and remove DEMO_MODE to enable live AI analysis.",
+    });
+    // Small artificial delay so the progress stepper is visible.
+    await new Promise((r) => setTimeout(r, 3000));
+    return {
+      imageId: stored.id,
+      imageUrl,
+      imageAnalysis: DEMO_IMAGE_ANALYSIS,
+      location: DEMO_LOCATION,
+      estimate: DEMO_ESTIMATE,
+      comparables: DEMO_COMPARABLES,
+      market: DEMO_MARKET,
+      report: DEMO_REPORT,
+      warnings,
+      elapsedMs: Date.now() - startedAt,
+    };
+  }
+
   // ── Stage 1: Vision ──
   const imageAnalysis = await analyzeImage(toDataUrl(buffer, stored.mimeType));
   if (imageAnalysis.source === "estimated") {
@@ -40,7 +78,6 @@ export async function runValuation(
   // ── Stage 2: Geolocation ──
   const location = await resolveLocation(imageAnalysis);
   if (!location) {
-    // Location is required to find comparables — degrade with a clear report.
     warnings.push({
       code: "LOCATION_UNDETERMINED",
       message:

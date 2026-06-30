@@ -20,6 +20,7 @@ import {
   ExternalLink,
   Sparkles,
   AlertTriangle,
+  FlaskConical,
 } from "lucide-react";
 import type {
   Comparable,
@@ -273,17 +274,34 @@ export function ValuationResults({ result }: Props) {
 
   return (
     <div className="mt-8 space-y-6">
-      {/* Warnings */}
-      {warnings.length > 0 && (
+      {/* Demo mode banner */}
+      {warnings.some((w) => w.code === "DEMO_MODE") && (
+        <div className="rounded-xl border border-forest/30 bg-forest/5 p-4">
+          <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-forest">
+            <FlaskConical className="h-4 w-4" />
+            Demo Mode — Sample Data
+          </div>
+          <p className="text-xs text-foreground/80">
+            This result uses representative sample data for a Denver, CO property.
+            Add your API keys and remove <code className="rounded bg-muted px-1">DEMO_MODE</code> from{" "}
+            <code className="rounded bg-muted px-1">.env.local</code> to enable live AI analysis.
+          </p>
+        </div>
+      )}
+
+      {/* Non-demo warnings */}
+      {warnings.filter((w) => w.code !== "DEMO_MODE").length > 0 && (
         <div className="rounded-xl border border-saffron/30 bg-saffron/5 p-4">
           <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-saffron-dark">
             <AlertTriangle className="h-4 w-4" />
             Notes on this estimate
           </div>
           <ul className="space-y-1 text-xs text-foreground/80">
-            {warnings.map((w) => (
-              <li key={w.code}>• {w.message}</li>
-            ))}
+            {warnings
+              .filter((w) => w.code !== "DEMO_MODE")
+              .map((w) => (
+                <li key={w.code}>• {w.message}</li>
+              ))}
           </ul>
         </div>
       )}
