@@ -20,21 +20,30 @@ export interface PropertyInput {
 }
 
 export interface AnalysisResult {
+  // Mortgage
   loanAmount: number;
   downPayment: number;
   monthlyMortgage: number;
   closingCosts: number;
   totalCashNeeded: number;
+
+  // Monthly Cash Flow
   grossMonthlyIncome: number;
   effectiveMonthlyIncome: number;
   totalMonthlyExpenses: number;
   monthlyNetCashFlow: number;
   annualNetCashFlow: number;
+
+  // Returns
   capRate: number;
   cashOnCashReturn: number;
   grossRentMultiplier: number;
   debtServiceCoverageRatio: number;
+
+  // Projections
   projections: YearProjection[];
+
+  // Investment Score
   investmentScore: number;
   scoreBreakdown: ScoreBreakdown;
 }
@@ -58,6 +67,9 @@ export interface ScoreBreakdown {
   appreciationScore: number;
 }
 
+/**
+ * Monthly mortgage payment (P&I) using standard amortization formula
+ */
 function calculateMonthlyMortgage(
   principal: number,
   annualRate: number,
@@ -72,6 +84,9 @@ function calculateMonthlyMortgage(
   );
 }
 
+/**
+ * Remaining loan balance after N months
+ */
 function remainingBalance(
   principal: number,
   annualRate: number,
@@ -90,6 +105,9 @@ function remainingBalance(
   return Math.max(0, balance);
 }
 
+/**
+ * Calculate investment score (1-10) based on key metrics
+ */
 function calculateInvestmentScore(
   monthlyNetCashFlow: number,
   capRate: number,
@@ -97,6 +115,7 @@ function calculateInvestmentScore(
   dscr: number,
   appreciationRate: number
 ): ScoreBreakdown {
+  // Cash Flow Score (0-10): positive = good
   let cashFlowScore: number;
   if (monthlyNetCashFlow >= 500) cashFlowScore = 10;
   else if (monthlyNetCashFlow >= 300) cashFlowScore = 8;
@@ -105,6 +124,7 @@ function calculateInvestmentScore(
   else if (monthlyNetCashFlow >= -200) cashFlowScore = 2;
   else cashFlowScore = 1;
 
+  // Cap Rate Score (0-10)
   let capRateScore: number;
   if (capRate >= 10) capRateScore = 10;
   else if (capRate >= 8) capRateScore = 9;
@@ -114,6 +134,7 @@ function calculateInvestmentScore(
   else if (capRate >= 3) capRateScore = 3;
   else capRateScore = 1;
 
+  // Cash-on-Cash Return Score (0-10)
   let cashOnCashScore: number;
   if (cashOnCashReturn >= 15) cashOnCashScore = 10;
   else if (cashOnCashReturn >= 12) cashOnCashScore = 9;
@@ -123,6 +144,7 @@ function calculateInvestmentScore(
   else if (cashOnCashReturn >= 2) cashOnCashScore = 3;
   else cashOnCashScore = 1;
 
+  // DSCR Score (0-10)
   let dscScore: number;
   if (dscr >= 1.5) dscScore = 10;
   else if (dscr >= 1.3) dscScore = 8;
@@ -131,6 +153,7 @@ function calculateInvestmentScore(
   else if (dscr >= 0.8) dscScore = 3;
   else dscScore = 1;
 
+  // Appreciation Score (0-10)
   let appreciationScore: number;
   if (appreciationRate >= 5) appreciationScore = 10;
   else if (appreciationRate >= 4) appreciationScore = 8;
@@ -148,7 +171,11 @@ function calculateInvestmentScore(
   };
 }
 
+/**
+ * Main analysis function
+ */
 export function analyzeProperty(input: PropertyInput): AnalysisResult {
+  // ── Mortgage Calculations ──
   const downPayment = (input.purchasePrice * input.downPaymentPercent) / 100;
   const loanAmount = input.purchasePrice - downPayment;
   const monthlyMortgage = calculateMonthlyMortgage(
@@ -159,6 +186,7 @@ export function analyzeProperty(input: PropertyInput): AnalysisResult {
   const closingCosts = (input.purchasePrice * input.closingCostPercent) / 100;
   const totalCashNeeded = downPayment + closingCosts;
 
+  // ── Monthly Cash Flow ──
   const grossMonthlyIncome = input.monthlyRent;
   const vacancyLoss = grossMonthlyIncome * (input.vacancyRatePercent / 100);
   const effectiveMonthlyIncome = grossMonthlyIncome - vacancyLoss;
@@ -177,48 +205,28 @@ export function analyzeProperty(input: PropertyInput): AnalysisResult {
   const monthlyNetCashFlow = effectiveMonthlyIncome - totalMonthlyExpenses;
   const annualNetCashFlow = monthlyNetCashFlow * 12;
 
-  const annualNOI =
-    effectiveMonthlyIncome * 12 -
-    (input.annualPropertyTax +
-      input.annualInsurance +
-      input.monthlyHOA * 12 +
-      input.annualMaintenance);
+  // ── Return Metrics ──
+  const annualNOI = effectiveMonthlyIncome * 12 - (input.annualPropertyTax + input.annualInsurance + input.monthlyHOA * 12 + input.annualMaintenance);
   const capRate = (annualNOI / input.purchasePrice) * 100;
-  const cashOnCashReturn =
-    totalCashNeeded > 0 ? (annualNetCashFlow / totalCashNeeded) * 100 : 0;
-  const grossRentMultiplier =
-    grossMonthlyIncome > 0
-      ? input.purchasePrice / (grossMonthlyIncome * 12)
-      : 0;
+  const cashOnCashReturn = totalCashNeeded > 0 ? (annualNetCashFlow / totalCashNeeded) * 100 : 0;
+  const grossRentMultiplier = grossMonthlyIncome > 0 ? input.purchasePrice / (grossMonthlyIncome * 12) : 0;
   const annualDebtService = monthlyMortgage * 12;
-  const debtServiceCoverageRatio =
-    annualDebtService > 0 ? annualNOI / annualDebtService : 999;
+  const debtServiceCoverageRatio = annualDebtService > 0 ? annualNOI / annualDebtService : 999;
 
+  // ── Projections (20 years) ──
   const projections: YearProjection[] = [];
   let cumulativeCashFlow = 0;
 
   for (let year = 1; year <= 20; year++) {
-    const rentMultiplier = Math.pow(
-      1 + input.annualRentGrowthPercent / 100,
-      year - 1
-    );
+    const rentMultiplier = Math.pow(1 + input.annualRentGrowthPercent / 100, year - 1);
     const annualRent = effectiveMonthlyIncome * 12 * rentMultiplier;
-    const expenseGrowth = Math.pow(1.02, year - 1);
-    const annualExpenses =
-      (totalMonthlyExpenses - monthlyMortgage) * 12 * expenseGrowth +
-      monthlyMortgage * 12;
+    const expenseGrowth = Math.pow(1.02, year - 1); // 2% expense inflation
+    const annualExpenses = (totalMonthlyExpenses - monthlyMortgage) * 12 * expenseGrowth + monthlyMortgage * 12;
     const annualCashFlow = annualRent - annualExpenses;
     cumulativeCashFlow += annualCashFlow;
 
-    const propertyValue =
-      input.purchasePrice *
-      Math.pow(1 + input.annualAppreciationPercent / 100, year);
-    const loanBalance = remainingBalance(
-      loanAmount,
-      input.interestRate,
-      input.loanTermYears,
-      year
-    );
+    const propertyValue = input.purchasePrice * Math.pow(1 + input.annualAppreciationPercent / 100, year);
+    const loanBalance = remainingBalance(loanAmount, input.interestRate, input.loanTermYears, year);
     const equity = propertyValue - loanBalance;
     const totalReturn = equity - totalCashNeeded + cumulativeCashFlow;
 
@@ -234,6 +242,7 @@ export function analyzeProperty(input: PropertyInput): AnalysisResult {
     });
   }
 
+  // ── Investment Score ──
   const scoreBreakdown = calculateInvestmentScore(
     monthlyNetCashFlow,
     capRate,
@@ -266,8 +275,7 @@ export function analyzeProperty(input: PropertyInput): AnalysisResult {
     capRate: Math.round(capRate * 100) / 100,
     cashOnCashReturn: Math.round(cashOnCashReturn * 100) / 100,
     grossRentMultiplier: Math.round(grossRentMultiplier * 100) / 100,
-    debtServiceCoverageRatio:
-      Math.round(debtServiceCoverageRatio * 100) / 100,
+    debtServiceCoverageRatio: Math.round(debtServiceCoverageRatio * 100) / 100,
     projections,
     investmentScore,
     scoreBreakdown,

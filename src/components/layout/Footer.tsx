@@ -28,6 +28,7 @@ export function Footer() {
             </h3>
             <ul className="space-y-2 text-sm text-cream-dark/70">
               <li><a href="#features" className="transition-colors hover:text-cream cursor-pointer">Features</a></li>
+              <li><a href="#valuation" className="transition-colors hover:text-cream cursor-pointer">Image Valuation</a></li>
               <li><a href="#analyzer" className="transition-colors hover:text-cream cursor-pointer">Property Analyzer</a></li>
               <li><a href="#how-it-works" className="transition-colors hover:text-cream cursor-pointer">How It Works</a></li>
             </ul>

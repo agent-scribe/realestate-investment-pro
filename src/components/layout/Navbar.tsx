@@ -9,10 +9,12 @@ import {
   BarChart3,
   Shield,
   Calculator,
+  Camera,
 } from "lucide-react";
 
 const navLinks = [
   { href: "#features", label: "Features", icon: BarChart3 },
+  { href: "#valuation", label: "Image Valuation", icon: Camera },
   { href: "#analyzer", label: "Analyzer", icon: Calculator },
   { href: "#how-it-works", label: "How It Works", icon: Shield },
 ];

@@ -20,6 +20,9 @@
 # production
 /build
 
+# uploaded property images (private, served only via API route)
+/.uploads
+
 # misc
 .DS_Store
 *.pem

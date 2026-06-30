@@ -16,6 +16,9 @@
     "react-dom": "19.2.4",
     "recharts": "^2.15.0"
   },
+  "optionalDependencies": {
+    "sharp": "^0.33.5"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
